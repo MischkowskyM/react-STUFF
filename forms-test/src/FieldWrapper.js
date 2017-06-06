@@ -74,18 +74,16 @@ class FieldWrapper extends React.Component {
 			
 			let newState ={
 				...this.props.formState,
-				[childId]: childState
+				[childId]: childState,
+				
 			};
-			
+			Object.keys(newState).reduce((a,b) => !newState[a].error && !newState[b].error)
 			this.props.dispatch(updateFormState(newState))
 			if (this.props.onFormStateChange){
 				this.props.onFormStateChange();
 			}
 		}
 		return childState.value;
-	}
-
-	componentWillReceiveProps(nextProps){
 	}
 
 	render() {
