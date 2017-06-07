@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import Field from "./Field";
-import {NormalizedField} from "./Field";
+import Field from "./shared/Field";
+import NormalizedField from "./shared/NormalizedField";
 import FieldWrapper from "./FieldWrapper";
+import Radio from "./shared/Radio";
 import {connect} from "react-redux"
 
 
@@ -25,7 +26,6 @@ function notFoo(value){
 }
 
 function normalizationTest(value){
-	console.log("Normalizing", value);
 	return value.toUpperCase();
 }
 
@@ -38,6 +38,10 @@ class App extends Component {
 					<Field label="Name:" id="Name" validate={required} />
 					<br/>
 					<NormalizedField label="Foo!" id="Foo" validate={[required, notFoo]} normalize={normalizationTest} />
+					<br/>
+					<input type="submit" ></input>
+					<br/>
+					<Radio label="Foo!" id="Radio" options={[{label:"1", value:1},{label:"2", value:2}]} />
 				</FieldWrapper>
 			</div>
 		);

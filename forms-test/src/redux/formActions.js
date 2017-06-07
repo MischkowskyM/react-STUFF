@@ -6,9 +6,10 @@ export function updateFormState(state) {
 	};
 }
 
-export function setFormField(field){
+export function setFormField(fieldValues,fieldId){
 	return{
 		type: "SET_FORM_FIELD",
-		field: field
+		field: fieldValues,
+		fieldId: fieldId
 	}
 }

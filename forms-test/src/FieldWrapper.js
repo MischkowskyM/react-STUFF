@@ -1,27 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {updateFormState} from "./redux/formActions";
+import {updateFormState,setFormField} from "./redux/formActions";
 import { connect } from 'react-redux';
-import {FIELD_PROPS} from "./shared/FieldProps";
-
-class FieldHOC extends React.Component{
-	static propTypes = {
-		...FIELD_PROPS
-	}
-
-	render(){
-		return (
-			<div>
-				<label htmlFor={this.props.id}>
-					{this.props.label}               
-				</label>
-				{React.createElement(this.props.children[0], {...this.props}) }
-				
-			</div>
-		)
-	}
-}
-
 
 class FieldWrapper extends React.Component {
 	static propTypes ={
@@ -37,23 +17,43 @@ class FieldWrapper extends React.Component {
 		Object.keys(this.props.defaults).forEach((element) => {
 			defaultState[element] = {value: this.props.defaults[element]}
 		});
-		this.props.dispatch(updateFormState(defaultState))
+		this.props.dispatch(updateFormState(defaultState));
 		this.update = this.update.bind(this)
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
+	handleSubmit(e){
+		e.preventDefault();
+
+		let isValid = true;
+		let newState ={
+			...this.props.formState
+		}
+		Object.keys(this.props.formState).forEach((childId) => {
+			let child = this.props.children.find(y => y.props.id === childId);
+			
+			let {validate} = child.props;
+			if (validate) {
+				newState[childId].error = this.validateChild(newState[childId].value, validate);
+				isValid = !newState[childId].error;
+			}
+		});
+		this.props.dispatch(updateFormState(newState))
+	}
+	
 	validateChild(value, validate){
 		if (typeof(validate) === "function") {
 			return validate(value);
 		}
 		else
 		{
-			let error = "";
-			for (let i = 0; i < validate.length; i++){
+			let error;
+			let i = 0;
+			while (!error && i < validate.length){
 				error = validate[i](value);
-				if (error){
-					return error;
-				}
+				i++
 			}
+			return error;
 		}
 	}
 
@@ -62,51 +62,29 @@ class FieldWrapper extends React.Component {
 			value: value,
 			error: ""
 		}
-		console.log(this.props.formState);
-		if (this.props.formState[childId].value !== value){
-			
+		if (!this.props.formState[childId] || this.props.formState[childId].value !== value){
 			let child = this.props.children.find(y => y.props.id === childId);
-			
-			let {validate} = child.props;
-			if (validate) {
-				childState.error = this.validateChild(childState.value, validate);
+			if (child.props.validate) {
+				childState.error = this.validateChild(childState.value, child.props.validate);
 			}
-			
-			let newState ={
-				...this.props.formState,
-				[childId]: childState,
-				
-			};
-			Object.keys(newState).reduce((a,b) => !newState[a].error && !newState[b].error)
-			this.props.dispatch(updateFormState(newState))
-			if (this.props.onFormStateChange){
-				this.props.onFormStateChange();
-			}
+			let newState = {...this.props.formState};
+            newState[childId] =childState;
+			this.props.dispatch(setFormField(childState, childId));
 		}
 		return childState.value;
 	}
 
 	render() {
-		var childrenWithProps = React.Children.map(this.props.children, (child) => {
-			if (typeof(child.type) === "string" ){
-				return child
-			}
-			
-			return React.cloneElement(
-				child,
-				{ updateParent: this.update, ...this.props.formState[child.props.id] });
-		});
 		return (
-			<div>
-				{childrenWithProps}
-			</div>
+			<form onSubmit={this.handleSubmit}>
+				 { React.Children.map(this.props.children, child => React.cloneElement(child, { updateParent: this.update, ...this.props.formState[child.props.id] }))}
+			</form>
 		);
 	}
 }
 
 
 function mapStateToProps(state){
-	console.log("state:", state);
 	return {formState: state.formState};
 }
 export default connect(mapStateToProps)(FieldWrapper);
