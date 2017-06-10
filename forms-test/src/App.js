@@ -5,14 +5,6 @@ import FieldWrapper from "./FieldWrapper";
 import Radio from "./shared/Radio";
 import {connect} from "react-redux"
 
-
-/*
-  node: {
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty',
-  }, */
-
 function required(value){
 	if (!value) {
 		return "Dies ist ein Pflichtfeld";
@@ -30,18 +22,18 @@ function normalizationTest(value){
 }
 
 class App extends Component {
-	
 	render() {
+		const defaultState = {Name:{value:"asd"},Foo:{value:"ASD"},Radio:{"value":"1"}};
 		return (
 			<div className="App">
-				<FieldWrapper defaults={{Name: "Earl", Foo: "Foo!"}}>
+				<FieldWrapper >
 					<Field label="Name:" id="Name" validate={required} />
 					<br/>
 					<NormalizedField label="Foo!" id="Foo" validate={[required, notFoo]} normalize={normalizationTest} />
 					<br/>
-					<input type="submit" ></input>
+					<Radio label="Foo!" id="Radio" validate={required} options={[{label:"1", value:"1"},{label:"2", value:"2"}]} />
 					<br/>
-					<Radio label="Foo!" id="Radio" options={[{label:"1", value:"1"},{label:"2", value:"2"}]} />
+					<input type="submit" ></input>
 				</FieldWrapper>
 			</div>
 		);

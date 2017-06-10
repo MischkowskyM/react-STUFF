@@ -18,7 +18,6 @@ export default class Radio extends React.Component {
 		super(props);
 
 		this.state = { value: "" };
-
 		this.onChange = this.onChange.bind(this);
 	}
 

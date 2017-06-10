@@ -6,16 +6,17 @@ import { connect } from 'react-redux';
 class FieldWrapper extends React.Component {
 	static propTypes ={
 		formState: PropTypes.object,
-		defaults: PropTypes.object,
 		onFormStateChange: PropTypes.func,
 	}
 
 	constructor(props) {		
 		super(props)
-
 		let defaultState = {};
-		Object.keys(this.props.defaults).forEach((element) => {
-			defaultState[element] = {value: this.props.defaults[element]}
+
+		React.Children.forEach(this.props.children, (child) => {
+			if (typeof(child.type) !== "string" ){
+				defaultState[child.props.id] = {};
+			}
 		});
 		this.props.dispatch(updateFormState(defaultState));
 		this.update = this.update.bind(this)
@@ -31,7 +32,6 @@ class FieldWrapper extends React.Component {
 		}
 		Object.keys(this.props.formState).forEach((childId) => {
 			let child = this.props.children.find(y => y.props.id === childId);
-			
 			let {validate} = child.props;
 			if (validate) {
 				newState[childId].error = this.validateChild(newState[childId].value, validate);
@@ -62,6 +62,7 @@ class FieldWrapper extends React.Component {
 			value: value,
 			error: ""
 		}
+		
 		if (!this.props.formState[childId] || this.props.formState[childId].value !== value){
 			let child = this.props.children.find(y => y.props.id === childId);
 			if (child.props.validate) {
