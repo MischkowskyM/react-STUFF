@@ -7,10 +7,10 @@ export default class Radio extends React.Component {
 	static propTypes = {
 		...FIELD_PROPS,
 		label: PropTypes.string,
-		options: React.PropTypes.arrayOf(React.PropTypes.shape({
-			label: React.PropTypes.string.isRequired,
-			selected: React.PropTypes.bool,
-			value: React.PropTypes.string,
+		options: PropTypes.arrayOf(PropTypes.shape({
+			label: PropTypes.string.isRequired,
+			selected: PropTypes.bool,
+			value: PropTypes.string,
 		})).isRequired,
 	};
 
@@ -19,28 +19,21 @@ export default class Radio extends React.Component {
 
 		this.state = { value: "" };
 
-		this.handleUpdate = this.handleUpdate.bind(this);
 		this.onChange = this.onChange.bind(this);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		this.setState({ value: nextProps.value });
-	}
-
-	handleUpdate(event) {
-		this.setState({ value: this.props.updateParent(this.props.id, this.state.value) });
-	}
-
 	onChange(event) {
-		this.setState({ value: event.target.value });
+		this.setState({ value: this.props.updateParent(this.props.id,  event.target.value) });
 	}
 
 	render() {
-		let radioButtons = [];
-		this.props.options.forEach(function(element) {
-			radioButtons.push(
-				<label>
-					<input type="radio" value={element.value} checked={element.selected} />
+		let radioButtons = this.props.options.map(function(element) {
+			return (
+				<label key={this.props.id + "_" + element.value}>
+					<input type="radio" name={this.props.id}
+						onChange={this.onChange}
+						value={element.value} checked={element.selected} />
+					{element.label}
 				</label>)
 		}, this);
 		return (

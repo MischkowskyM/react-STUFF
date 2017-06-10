@@ -41,7 +41,7 @@ class App extends Component {
 					<br/>
 					<input type="submit" ></input>
 					<br/>
-					<Radio label="Foo!" id="Radio" options={[{label:"1", value:1},{label:"2", value:2}]} />
+					<Radio label="Foo!" id="Radio" options={[{label:"1", value:"1"},{label:"2", value:"2"}]} />
 				</FieldWrapper>
 			</div>
 		);

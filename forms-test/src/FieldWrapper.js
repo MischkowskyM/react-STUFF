@@ -75,9 +75,18 @@ class FieldWrapper extends React.Component {
 	}
 
 	render() {
+		var childrenWithProps = React.Children.map(this.props.children, (child) => {
+			if (typeof(child.type) === "string" ){
+				return child
+			}
+			
+			return React.cloneElement(
+				child,
+				{ updateParent: this.update, ...this.props.formState[child.props.id] });
+		});
 		return (
 			<form onSubmit={this.handleSubmit}>
-				 { React.Children.map(this.props.children, child => React.cloneElement(child, { updateParent: this.update, ...this.props.formState[child.props.id] }))}
+				 { childrenWithProps }
 			</form>
 		);
 	}
