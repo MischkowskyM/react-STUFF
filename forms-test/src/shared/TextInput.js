@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {FIELD_PROPS} from "./FieldProps";
 
 
-export default class Field extends React.Component {
+export default class TextInput extends React.Component {
     static propTypes = {
         ...FIELD_PROPS,
         label: PropTypes.string,

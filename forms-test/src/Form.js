@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {updateFormState,setFormField} from "./redux/formActions";
 import { connect } from 'react-redux';
 
-class FieldWrapper extends React.Component {
+class Form extends React.Component {
 	static propTypes ={
 		formState: PropTypes.object,
 		onFormStateChange: PropTypes.func,
@@ -97,4 +97,4 @@ class FieldWrapper extends React.Component {
 function mapStateToProps(state){
 	return {formState: state.formState};
 }
-export default connect(mapStateToProps)(FieldWrapper);
+export default connect(mapStateToProps)(Form);

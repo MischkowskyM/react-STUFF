@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {FIELD_PROPS} from "./FieldProps";
-import Field from "./Field";
+import TextInput from "./TextInput";
 
-export default class NormalizedField extends React.Component{
+export default class NormalizedTextInput extends React.Component{
         static propTypes = {
         ...FIELD_PROPS,
         normalize: PropTypes.oneOfType([
@@ -40,7 +40,7 @@ export default class NormalizedField extends React.Component{
 
     render() {
 		return (
-            <Field
+            <TextInput
              	id={this.props.id}
                 value={this.props.value}
                 validate={this.props.validate}
