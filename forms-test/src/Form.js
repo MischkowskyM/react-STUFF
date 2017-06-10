@@ -15,7 +15,7 @@ class Form extends React.Component {
 
 		React.Children.forEach(this.props.children, (child) => {
 			if (typeof(child.type) !== "string" ){
-				defaultState[child.props.id] = {};
+				defaultState[child.props.id] = { value: ""};
 			}
 		});
 		this.props.dispatch(updateFormState(defaultState));
@@ -26,7 +26,6 @@ class Form extends React.Component {
 	handleSubmit(e){
 		e.preventDefault();
 
-		let isValid = true;
 		let newState ={
 			...this.props.formState
 		}
@@ -35,7 +34,6 @@ class Form extends React.Component {
 			let {validate} = child.props;
 			if (validate) {
 				newState[childId].error = this.validateChild(newState[childId].value, validate);
-				isValid = !newState[childId].error;
 			}
 		});
 		this.props.dispatch(updateFormState(newState))

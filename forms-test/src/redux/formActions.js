@@ -1,9 +1,8 @@
 export function updateFormState(state) {
-
 	return {
 		type: "UPDATE",
 		formState: state,
-		formValid: false,
+		formValid: !Object.keys(state).find(key => state[key].error),
 	};
 }
 
