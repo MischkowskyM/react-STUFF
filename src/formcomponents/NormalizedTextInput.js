@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {FIELD_PROPS} from "./FieldProps";
+import {FIELD_PROPS} from "../shared/FieldProps";
 import TextInput from "./TextInput";
 
 export default class NormalizedTextInput extends React.Component{

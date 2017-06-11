@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { FIELD_PROPS } from "./FieldProps";
+import {FIELD_PROPS} from "../shared/FieldProps";
 
 
 export default class RadioInput extends React.Component {
