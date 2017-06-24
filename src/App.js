@@ -19,8 +19,10 @@ function notFoo(value){
 }
 
 function normalizationTest(value){
+	console.log("Normal.")
 	return value.toUpperCase();
 }
+
 
 class App extends Component {
 	render() {
@@ -33,7 +35,9 @@ class App extends Component {
 					<br/>
 					<RadioInput label="Foo!" id="Radio" validate={required} options={[{label:"1", value:"1"},{label:"2", value:"2"}]} />
 					<br/>
-					<SelectInput label="Select one!" id="select" validate={required} options={[{label:"1", value:"1"},{label:"2", value:"2"}]} />
+						<div>
+							<SelectInput label="Select one!" id="select" validate={required} options={[{label:"1", value:"1"},{label:"2", value:"2"}]} />
+						</div>
 					<br/>
 					<input type="submit" ></input>
 				</Form>

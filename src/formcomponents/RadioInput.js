@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {FIELD_PROPS} from "../shared/FieldProps";
+import inForm from "../shared/InForm";
 
-
-export default class RadioInput extends React.Component {
+export class RadioInput extends React.Component {
 	static propTypes = {
 		...FIELD_PROPS,
 		label: PropTypes.string,
@@ -46,3 +46,4 @@ export default class RadioInput extends React.Component {
 		)
 	}
 }
+export default inForm(RadioInput);

@@ -1,9 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {FIELD_PROPS} from "../shared/FieldProps";
-import TextInput from "./TextInput";
+import {TextInput} from "./TextInput";
+import inForm from "../shared/InForm";
 
-export default class NormalizedTextInput extends React.Component{
+export class NormalizedTextInput extends React.Component{
         static propTypes = {
         ...FIELD_PROPS,
         normalize: PropTypes.oneOfType([
@@ -50,3 +51,4 @@ export default class NormalizedTextInput extends React.Component{
 		);
 	}
 }
+export default inForm(NormalizedTextInput);

@@ -9,18 +9,34 @@ class Form extends React.Component {
 		onFormStateChange: PropTypes.func,
 	}
 
+	static childContextTypes = {
+		register: PropTypes.func,
+		updateForm: PropTypes.func,
+		formState: PropTypes.object,
+	}
+
+
 	constructor(props) {		
 		super(props)
 		let defaultState = {};
+		
+		this.children = {};
 
-		React.Children.forEach(this.props.children, (child) => {
-			if (typeof(child.type) !== "string" ){
-				defaultState[child.props.id] = { value: ""};
-			}
-		});
-		this.props.dispatch(updateFormState(defaultState));
 		this.update = this.update.bind(this)
+		this.registerChild = this.registerChild.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this);
+	}
+
+	getChildContext(){
+		return {
+			register: this.registerChild,
+			updateForm : this.update,
+			formState: {...this.props.formState },
+		}
+	}
+
+	registerChild(id, child){
+		this.children[id] = child;
 	}
 
 	handleSubmit(e){
@@ -29,13 +45,18 @@ class Form extends React.Component {
 		let newState ={
 			...this.props.formState
 		}
-		Object.keys(this.props.formState).forEach((childId) => {
-			let child = this.props.children.find(y => y.props.id === childId);
+
+		Object.keys(this.children).forEach((childId) => {
+			let child = this.children[childId];
 			let {validate} = child.props;
 			if (validate) {
-				newState[childId].error = this.validateChild(newState[childId].value, validate);
+				if (!newState[childId]){
+					newState[childId] = {value: child.props.value};
+				}
+				newState[childId].error = this.validateChild(child.props.value, validate);
 			}
 		});
+		this.setState(newState);
 		this.props.dispatch(updateFormState(newState))
 	}
 	
@@ -62,7 +83,7 @@ class Form extends React.Component {
 		}
 		
 		if (!this.props.formState[childId] || this.props.formState[childId].value !== value){
-			let child = this.props.children.find(y => y.props.id === childId);
+			let child = this.children[childId];
 			if (child.props.validate) {
 				childState.error = this.validateChild(childState.value, child.props.validate);
 			}
@@ -74,18 +95,9 @@ class Form extends React.Component {
 	}
 
 	render() {
-		var childrenWithProps = React.Children.map(this.props.children, (child) => {
-			if (typeof(child.type) === "string" ){
-				return child
-			}
-			
-			return React.cloneElement(
-				child,
-				{ updateParent: this.update, ...this.props.formState[child.props.id] });
-		});
 		return (
 			<form onSubmit={this.handleSubmit}>
-				 { childrenWithProps }
+				 { this.props.children }
 			</form>
 		);
 	}
