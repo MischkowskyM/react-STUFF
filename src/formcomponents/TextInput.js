@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { FIELD_PROPS } from "../shared/FieldProps";
-import inForm from "../shared/InForm";
+import withForm from "../shared/WithForm";
 
 
 export class TextInput extends React.Component {
@@ -47,4 +47,4 @@ export class TextInput extends React.Component {
     }
 }
 
-export default inForm(TextInput);
+export default withForm(TextInput);

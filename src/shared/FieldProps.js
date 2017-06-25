@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 export const FIELD_PROPS =
 {
-	id: PropTypes.string,
+	id: PropTypes.string.isRequired,
 	value: PropTypes.string,
 	updateParent: PropTypes.func,
 	validate: PropTypes.oneOfType([

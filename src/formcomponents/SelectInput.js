@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {FIELD_PROPS} from "../shared/FieldProps";
-import inForm from "../shared/InForm";
+import withForm from "../shared/WithForm";
 
 export class SelectInput extends React.Component{
         static propTypes = {
@@ -44,4 +44,4 @@ export class SelectInput extends React.Component{
 		);
 	}
 }
-export default inForm(SelectInput);
+export default withForm(SelectInput);
